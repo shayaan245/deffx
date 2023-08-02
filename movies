@@ -1,0 +1,49 @@
+{
+  "movies": [
+    {
+      "Movie name": "Oppenheimer",
+      "Genre":["Biography","Drama","History"],
+      "Runtime": 10800 ,
+      "Metascore": 88,
+      "IMDb ratings": 8.7,
+      "Lead actors":[ "Cilian Murphy","Emily Blunt"],
+      "Release date":1689897600
+    },
+    {
+      "Movie name": "Mission:Impossible-Dead  reckoning part 1",
+      "Genre": ["Action","Adventure","Thriller"],
+      "Runtime": 9780,
+      "Metascore": 81,
+      "IMDb ratings": 8,
+      "Lead actors":[ "Tom Cruise","Hayley Atwell"],
+      "Release date": 1689089769
+    },
+    {
+      "Movie name": "Fast X",
+      "Genre":["Action","Adventure","Crime"],
+      "Runtime": 8460,
+      "Metascore": 56,
+      "IMDb ratings": 5.9,
+      "Lead actors": ["Vin Diesel","Michelle Rodriguez"],
+      "Release date": 1684510569
+    },
+    {
+      "Movie name": "X-Men Origins:Wolverine",
+      "Genre": ["Action","Sci-Fi"],
+      "Runtime": 6420,
+      "Metascore": 40,
+      "IMDb ratings": 6.5,
+      "Lead actors": ["Hugh Jackman","Liev Schreiber"],
+      "Release date": 1241192169
+    },
+    {
+      "Movie name": "Deadpool",
+      "Genre": ["Action","Comedy"],
+      "Runtime": 6480,
+      "Metascore": 65,
+      "IMDb ratings": 8.0,
+      "Lead actors": ["Ryan Reynolds","Morena Baccarin"],
+      "Release date": 1455291369
+    }
+  ]
+}
