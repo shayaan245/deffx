@@ -7,12 +7,12 @@ def add_new_movie():
     movie["Movie name"] = input("Enter the movie name: ")
     genres = input("Enter genres (separated by commas): ").split(",")
     movie["Genre"] = [genre.strip() for genre in genres]
-    movie["Runtime"] = int(input("Enter the runtime of the movie (in seconds): "))
+    movie["Runtime"] = int(input("Enter the runtime of the movie is "))
     movie["Metascore"] = int(input("Enter the Metascore for the movie: "))
     movie["IMDb ratings"] = float(input("Enter the IMDb rating for the movie: "))
-    lead_actors = input("Enter lead actors (separated by commas): ").split(",")
+    lead_actors = input("Enter lead actors  ").split(",")
     movie["Lead actors"] = [actor.strip() for actor in lead_actors]
-    movie["Release date"] = int(input("Enter the release date of the movie (Unix timestamp): "))
+    movie["Release date"] = int(input("Enter the release date of the movie  "))
 
     with open(file_path, "r") as json_file:
         data = json.load(json_file)
@@ -34,7 +34,7 @@ def display_movies():
         formatted_output += f"Movie name is {movie['Movie name']}. Its genre is {', '.join(movie['Genre'])}. "
         formatted_output += f"The runtime of the movie is {movie['Runtime']} seconds. The Metascore for the movie is {movie['Metascore']}. "
         formatted_output += f"The IMDb rating is {movie['IMDb ratings']}. The lead actors of the movie are {', '.join(movie['Lead actors'])}. "
-        formatted_output += f"The release date of the movie is {movie['Release date']} (Unix timestamp).\n\n"
+        formatted_output += f"The release date of the movie is {movie['Release date']}.\n\n"
     print(formatted_output)
 
 while True:
@@ -42,7 +42,7 @@ while True:
     print("2. Add a new Movie")
     print("3. Exit")
 
-    choice = input("Enter your choice (1/2/3): ")
+    choice = input("enter your choice (1/2/3): ")
 
     if choice == "1":
         display_movies()
@@ -51,4 +51,4 @@ while True:
     elif choice == "3":
         break
     else:
-        print("Invalid choice. Please try again.\n")
+        print("Invalid. try again.\n")
