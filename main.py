@@ -154,9 +154,8 @@ def add_new_movie():
     movie["IMDb ratings"] = float(input("Enter the IMDb rating for the movie: "))
     lead_actors = input("Enter lead actors ").split(",")
     movie["Lead actors"] = [actor.strip() for actor in lead_actors]
-    release_date_str = input("Enter the release date of the movie (YYYY-MM-DD HH:MM:SS): ")
-    release_date = datetime.strptime(release_date_str, "%Y-%m-%d %H:%M:%S")
-    movie["Release date"] = int(input("Enter the release date of the movie: "))
+    release_date_str = input("Enter the release date of the movie in epoch time: ")
+    movie["Release date"] = int(release_date_str)
 
     with open(file_path, "r") as json_file:
         data = json.load(json_file)
@@ -226,4 +225,3 @@ while True:
         break
     else:
         print("Invalid. try again.\n")
-        
