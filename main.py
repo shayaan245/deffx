@@ -143,19 +143,19 @@ import json
 import json
 from datetime import datetime
 file_path = "movies.json"
-
 def add_new_movie():
     movie = {}
     movie["Movie name"] = input("Enter the movie name: ")
-    genres = input("Enter genres  ").split(",")
+    genres = input("Enter genres: ").split(",")
     movie["Genre"] = [genre.strip() for genre in genres]
     movie["Runtime"] = int(input("Enter the runtime of the movie in seconds: "))
     movie["Metascore"] = int(input("Enter the Metascore for the movie: "))
     movie["IMDb ratings"] = float(input("Enter the IMDb rating for the movie: "))
-    lead_actors = input("Enter lead actors ").split(",")
+    lead_actors = input("Enter lead actors: ").split(",")
     movie["Lead actors"] = [actor.strip() for actor in lead_actors]
-    release_date_str = input("Enter the release date of the movie in epoch time: ")
-    movie["Release date"] = int(release_date_str)
+    release_date_str = input("Enter the release date of the movie (DD-MM-YYYY): ")
+    release_date = datetime.strptime(release_date_str, "%d-%m-%Y")
+    movie["Release date"] = int(release_date.timestamp())
 
     with open(file_path, "r") as json_file:
         data = json.load(json_file)
@@ -168,9 +168,10 @@ def add_new_movie():
 
     print("Movie added successfully!")
 
+
 def get_formatted_datetime(epoch_time):
     dt_object = datetime.fromtimestamp(epoch_time)
-    formatted_datetime = dt_object.strftime("%d-%m-%y ")
+    formatted_datetime = dt_object.strftime("%d-%m-%Y")
     return formatted_datetime
 
 
@@ -185,6 +186,8 @@ def display_movies():
         formatted_output += f"The IMDb rating is {movie['IMDb ratings']}. The lead actors of the movie are {', '.join(movie['Lead actors'])}. "
         formatted_output += f"The release date of the movie is {get_formatted_datetime(movie['Release date'])}.\n\n"
     print(formatted_output)
+
+
 
 def delete_movie(movie_name):
     with open(file_path, "r") as json_file:
