@@ -209,22 +209,30 @@ def delete_movie(movie_name):
             json.dump(data, json_file, indent=4)
         print("Movie deleted successfully!")
 
-while True:
-    print("1. Display Movies")
-    print("2. Add a new Movie")
-    print("3. Delete a Movie")
-    print("4. Exit")
 
-    choice = input("Enter your choice (1/2/3/4): ")
+def main():
 
-    if choice == "1":
-        display_movies()
-    elif choice == "2":
-        add_new_movie()
-    elif choice == "3":
-        movie_name = input("Enter the name of the movie you want to delete: ")
-        delete_movie(movie_name)
-    elif choice == "4":
-        break
-    else:
-        print("Invalid. try again.\n")
+
+    while True:
+
+        print("1. Display Movies")
+        print("2. Add a new Movie")
+        print("3. Delete a Movie")
+        print("4. Exit")
+
+        choice = input("Enter your choice (1/2/3/4): ")
+
+        if choice == "1":
+            display_movies()
+        elif choice == "2":
+            add_new_movie()
+        elif choice == "3":
+            movie_name = input("Enter the name of the movie you want to delete: ")
+            delete_movie(movie_name)
+        elif choice == "4":
+            break
+        else:
+            print("Invalid. try again.\n")
+
+if __name__ == "__main__":
+    main()
