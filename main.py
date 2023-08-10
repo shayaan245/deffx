@@ -142,7 +142,18 @@ import json
 #         print("Invalid choice. Try again.\n")
 import json
 from datetime import datetime
+
 file_path = "movies.json"
+
+def read_write_json(data=None, write=False):
+    if write:
+        with open(file_path, "w") as json_file:
+            json.dump(data, json_file, indent=4)
+    else:
+        with open(file_path, "r") as json_file:
+            data = json.load(json_file)
+        return data
+
 def add_new_movie():
     movie = {}
     movie["Movie name"] = input("Enter the movie name: ")
@@ -157,28 +168,20 @@ def add_new_movie():
     release_date = datetime.strptime(release_date_str, "%d-%m-%Y")
     movie["Release date"] = int(release_date.timestamp())
 
-    with open(file_path, "r") as json_file:
-        data = json.load(json_file)
-
+    data = read_write_json()
     movies_list = data["movies"]
     movies_list.append(movie)
 
-    with open(file_path, "w") as json_file:
-        json.dump(data, json_file, indent=4)
-
+    read_write_json(data, write=True)
     print("Movie added successfully!")
-
 
 def get_formatted_datetime(epoch_time):
     dt_object = datetime.fromtimestamp(epoch_time)
     formatted_datetime = dt_object.strftime("%d-%m-%Y")
     return formatted_datetime
 
-
 def display_movies():
-    with open(file_path, "r") as json_file:
-        data = json.load(json_file)
-
+    data = read_write_json()
     formatted_output = ""
     for movie in data["movies"]:
         formatted_output += f"Movie name is {movie['Movie name']}. Its genre is {', '.join(movie['Genre'])}. "
@@ -187,12 +190,8 @@ def display_movies():
         formatted_output += f"The release date of the movie is {get_formatted_datetime(movie['Release date'])}.\n\n"
     print(formatted_output)
 
-
-
 def delete_movie(movie_name):
-    with open(file_path, "r") as json_file:
-        data = json.load(json_file)
-
+    data = read_write_json()
     movies_list = data["movies"]
     found = False
 
@@ -205,16 +204,11 @@ def delete_movie(movie_name):
     if not found:
         print("Movie not found.")
     else:
-        with open(file_path, "w") as json_file:
-            json.dump(data, json_file, indent=4)
+        read_write_json(data, write=True)
         print("Movie deleted successfully!")
 
-
 def main():
-
-
     while True:
-
         print("1. Display Movies")
         print("2. Add a new Movie")
         print("3. Delete a Movie")
@@ -232,7 +226,7 @@ def main():
         elif choice == "4":
             break
         else:
-            print("Invalid. try again.\n")
+            print("Invalid. Try again.\n")
 
 if __name__ == "__main__":
     main()
