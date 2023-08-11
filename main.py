@@ -183,7 +183,7 @@ def get_formatted_datetime(epoch_time):
 def display_movies():
     data = read_write_json()
     formatted_output = "\n".join([f"Movie name is {movie['Movie name']}. Its genre is {', '.join(movie['Genre'])}. The runtime of the movie is {movie['Runtime']} seconds. The Metascore for the movie is {movie['Metascore']}. The IMDb rating is {movie['IMDb ratings']}. The lead actors of the movie are {', '.join(movie['Lead actors'])}. The release date of the movie is {get_formatted_datetime(movie['Release date'])}.\n" for movie in data["movies"]])
-    print(formatted_output)ax
+    print(formatted_output)
 def delete_movie(movie_name):
     data = read_write_json()
     movies_list = data["movies"]
