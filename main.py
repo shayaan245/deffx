@@ -156,7 +156,17 @@ def read_write_json(data=None, write=False):
 
 def add_new_movie():
     movie = {}
-    movie["Movie name"] = input("Enter the movie name: ")
+    movie_name = input("Enter the movie name: ")
+
+    data = read_write_json()
+    movies_list = data["movies"]
+    for existing_movie in movies_list:
+        if existing_movie["Movie name"].lower() == movie_name.lower():
+            print("Movie with the same name already exists.")
+            return
+
+    movie["Movie name"] = movie_name
+
     genres = input("Enter genres: ").split(",")
     movie["Genre"] = [genre.strip() for genre in genres]
     movie["Runtime"] = int(input("Enter the runtime of the movie in seconds: "))
@@ -168,12 +178,11 @@ def add_new_movie():
     release_date = datetime.strptime(release_date_str, "%d-%m-%Y")
     movie["Release date"] = int(release_date.timestamp())
 
-    data = read_write_json()
-    movies_list = data["movies"]
     movies_list.append(movie)
 
     read_write_json(data, write=True)
     print("Movie added successfully!")
+
 
 def get_formatted_datetime(epoch_time):
     dt_object = datetime.fromtimestamp(epoch_time)
