@@ -145,6 +145,7 @@ from datetime import datetime
 
 file_path = "movies.json"
 
+
 def read_write_json(data=None, write=False):
     if write:
         with open(file_path, "w") as json_file:
@@ -153,6 +154,7 @@ def read_write_json(data=None, write=False):
         with open(file_path, "r") as json_file:
             data = json.load(json_file)
         return data
+
 
 def add_new_movie():
     movie = {}
@@ -189,17 +191,25 @@ def get_formatted_datetime(epoch_time):
     formatted_datetime = dt_object.strftime("%d-%m-%Y")
     return formatted_datetime
 
+
 def display_movies():
     data = read_write_json()
-    formatted_output = "\n".join([f"Movie name is {movie['Movie name']}. "
-                                  f"Its genre is {', '.join(movie['Genre'])}."
-                                  f" The runtime of the movie is {movie['Runtime']} seconds. "
-                                  f"The Metascore for the movie is {movie['Metascore']}. "
-                                  f"The IMDb rating is {movie['IMDb ratings']}. "
-                                  f"The lead actors of the movie are {', '.join(movie['Lead actors'])}. "
-                                  f"The release date of the movie is {get_formatted_datetime(movie['Release date'])}.\n"
-                                  for movie in data["movies"]])
+    movies_data = data["movies"]
+
+    formatted_output = "\n".join([
+        f"Movie name is {movie['Movie name']}. "
+        f"Its genre is {', '.join(movie['Genre'])}."
+        f" The runtime of the movie is {movie['Runtime']} seconds. "
+        f"The Metascore for the movie is {movie['Metascore']}. "
+        f"The IMDb rating is {movie['IMDb ratings']}. "
+        f"The lead actors of the movie are {', '.join(movie['Lead actors'])}. "
+        f"The release date of the movie is {get_formatted_datetime(movie['Release date'])}.\n"
+        for movie in movies_data
+    ])
+
     print(formatted_output)
+
+
 def delete_movie(movie_name):
     data = read_write_json()
     movies_list = data["movies"]
@@ -216,6 +226,7 @@ def delete_movie(movie_name):
     else:
         read_write_json(data, write=True)
         print("Movie deleted successfully!")
+
 
 def main():
     while True:
@@ -237,6 +248,7 @@ def main():
             break
         else:
             print("Invalid. Try again.\n")
+
 
 if __name__ == "__main__":
     main()
