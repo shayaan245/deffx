@@ -194,9 +194,9 @@ def get_formatted_datetime(epoch_time):
 
 def display_movies():
     data = read_write_json()
-    movies_data = data["movies"]
+    # movies_data = data["movies"]
 
-    formatted_output = "\n".join([
+    formatted_output_strings = [
         f"Movie name is {movie['Movie name']}. "
         f"Its genre is {', '.join(movie['Genre'])}."
         f" The runtime of the movie is {movie['Runtime']} seconds. "
@@ -204,8 +204,10 @@ def display_movies():
         f"The IMDb rating is {movie['IMDb ratings']}. "
         f"The lead actors of the movie are {', '.join(movie['Lead actors'])}. "
         f"The release date of the movie is {get_formatted_datetime(movie['Release date'])}.\n"
-        for movie in movies_data
-    ])
+        for movie in data["movies"]
+    ]
+    formatted_output ="\n".join(formatted_output_strings)
+
 
     print(formatted_output)
 
@@ -222,11 +224,10 @@ def delete_movie(movie_name):
             break
 
     if not found:
-        print("Movie not found.")
+        return "Movie not found."
     else:
         read_write_json(data, write=True)
-        print("Movie deleted successfully!")
-
+        return "Movie deleted successfully!"
 
 def main():
     while True:
@@ -244,6 +245,7 @@ def main():
         elif choice == "3":
             movie_name = input("Enter the name of the movie you want to delete: ")
             delete_movie(movie_name)
+
         elif choice == "4":
             break
         else:
