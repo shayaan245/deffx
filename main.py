@@ -156,7 +156,7 @@ def read_write_json(data=None, write=False):
         return data
 
 
-def add_new_movie():
+def get_movie_input():
     movie = {}
     movie_name = input("Enter the movie name: ")
 
@@ -165,10 +165,9 @@ def add_new_movie():
     for existing_movie in movies_list:
         if existing_movie["Movie name"].lower() == movie_name.lower():
             print("Movie with the same name already exists.")
-            return
+            return None
 
     movie["Movie name"] = movie_name
-
     genres = input("Enter genres: ").split(",")
     movie["Genre"] = [genre.strip() for genre in genres]
     movie["Runtime"] = int(input("Enter the runtime of the movie in seconds: "))
@@ -180,22 +179,26 @@ def add_new_movie():
     release_date = datetime.strptime(release_date_str, "%d-%m-%Y")
     movie["Release date"] = int(release_date.timestamp())
 
-    movies_list.append(movie)
-
-    read_write_json(data, write=True)
-    print("Movie added successfully!")
+    return movie
 
 
+def add_new_movie():
+    movie = get_movie_input()
+    if movie is not None:
+        data = read_write_json()
+        movies_list = data["movies"]
+        movies_list.append(movie)
+        read_write_json(data, write=True)
+        print("Movie added successfully!")
 def get_formatted_datetime(epoch_time):
     dt_object = datetime.fromtimestamp(epoch_time)
     formatted_datetime = dt_object.strftime("%d-%m-%Y")
     return formatted_datetime
 
 
+
 def display_movies():
     data = read_write_json()
-    # movies_data = data["movies"]
-
     formatted_output_strings = [
         f"Movie name is {movie['Movie name']}. "
         f"Its genre is {', '.join(movie['Genre'])}."
@@ -206,9 +209,7 @@ def display_movies():
         f"The release date of the movie is {get_formatted_datetime(movie['Release date'])}.\n"
         for movie in data["movies"]
     ]
-    formatted_output ="\n".join(formatted_output_strings)
-
-
+    formatted_output = "\n".join(formatted_output_strings)
     print(formatted_output)
 
 
@@ -224,10 +225,12 @@ def delete_movie(movie_name):
             break
 
     if not found:
-        return "Movie not found."
+        print("Movie not found.")
     else:
         read_write_json(data, write=True)
-        return "Movie deleted successfully!"
+        print("Movie deleted successfully!")
+    return found
+
 
 def main():
     while True:
@@ -244,8 +247,13 @@ def main():
             add_new_movie()
         elif choice == "3":
             movie_name = input("Enter the name of the movie you want to delete: ")
-            delete_movie(movie_name)
+            found = delete_movie(movie_name)
 
+
+            if found:
+                print("Movie deleted successfully!")
+            else:
+                print("Movie not found.")
         elif choice == "4":
             break
         else:
