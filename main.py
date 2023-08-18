@@ -160,12 +160,12 @@ def get_movie_input():
     movie = {}
     movie_name = input("Enter the movie name: ")
 
-    data = read_write_json()
-    movies_list = data["movies"]
-    for existing_movie in movies_list:
-        if existing_movie["Movie name"].lower() == movie_name.lower():
-            print("Movie with the same name already exists.")
-            return None
+    # data = read_write_json()
+    # movies_list = data["movies"]
+    # for existing_movie in movies_list:
+    #     if existing_movie["Movie name"].lower() == movie_name.lower():
+    #         print("Movie with the same name already exists.")
+    #         return None
 
     movie["Movie name"] = movie_name
     genres = input("Enter genres: ").split(",")
@@ -184,6 +184,13 @@ def get_movie_input():
 
 def add_new_movie():
     movie = get_movie_input()
+    data = read_write_json()
+    movie_name = input("Enter the movie name: ")
+    movies_list = data["movies"]
+    for existing_movie in movies_list:
+        if existing_movie["Movie name"].lower() == movie_name.lower():
+            print("Movie with the same name already exists.")
+            return None
     if movie is not None:
         data = read_write_json()
         movies_list = data["movies"]
@@ -224,11 +231,11 @@ def delete_movie(movie_name):
             found = True
             break
 
-    if not found:
-        print("Movie not found.")
-    else:
-        read_write_json(data, write=True)
-        print("Movie deleted successfully!")
+    # if not found:
+    #     print("Movie not found.")
+    # else:
+    #     read_write_json(data, write=True)
+    #     print("Movie deleted successfully!")
     return found
 
 
