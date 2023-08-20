@@ -237,15 +237,7 @@ def main():
         if choice == "1":
             display_movies()
         elif choice == "2":
-            movie = {
-                "Movie name": "Example Movie",
-                "Genre": ["Action", "Adventure"],
-                "Runtime": 120,
-                "Metascore": 80,
-                "IMDb ratings": 7.5,
-                "Lead actors": ["Actor1", "Actor2"],
-                "Release date": int(datetime(2023, 8, 17).timestamp())
-            }
+            movie =get_movie_input()
             add_new_movie(movie)
         elif choice == "3":
             movie_name = input("Enter the name of the movie you want to delete: ")
