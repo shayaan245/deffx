@@ -160,13 +160,6 @@ def get_movie_input():
     movie = {}
     movie_name = input("Enter the movie name: ")
 
-    # data = read_write_json()
-    # movies_list = data["movies"]
-    # for existing_movie in movies_list:
-    #     if existing_movie["Movie name"].lower() == movie_name.lower():
-    #         print("Movie with the same name already exists.")
-    #         return None
-
     movie["Movie name"] = movie_name
     genres = input("Enter genres: ").split(",")
     movie["Genre"] = [genre.strip() for genre in genres]
@@ -182,26 +175,24 @@ def get_movie_input():
     return movie
 
 
-def add_new_movie():
-    movie = get_movie_input()
+def add_new_movie(movie):
     data = read_write_json()
-    movie_name = input("Enter the movie name: ")
+    movie_name = movie["Movie name"].lower()
+
     movies_list = data["movies"]
     for existing_movie in movies_list:
         if existing_movie["Movie name"].lower() == movie_name.lower():
             print("Movie with the same name already exists.")
-            return None
-    if movie is not None:
-        data = read_write_json()
-        movies_list = data["movies"]
-        movies_list.append(movie)
-        read_write_json(data, write=True)
-        print("Movie added successfully!")
+            return
+
+    movies_list.append(movie)
+    read_write_json(data, write=True)
+    print("Movie added successfully!")
+
 def get_formatted_datetime(epoch_time):
     dt_object = datetime.fromtimestamp(epoch_time)
     formatted_datetime = dt_object.strftime("%d-%m-%Y")
     return formatted_datetime
-
 
 
 def display_movies():
@@ -231,11 +222,6 @@ def delete_movie(movie_name):
             found = True
             break
 
-    # if not found:
-    #     print("Movie not found.")
-    # else:
-    #     read_write_json(data, write=True)
-    #     print("Movie deleted successfully!")
     return found
 
 
@@ -251,11 +237,19 @@ def main():
         if choice == "1":
             display_movies()
         elif choice == "2":
-            add_new_movie()
+            movie = {
+                "Movie name": "Example Movie",
+                "Genre": ["Action", "Adventure"],
+                "Runtime": 120,
+                "Metascore": 80,
+                "IMDb ratings": 7.5,
+                "Lead actors": ["Actor1", "Actor2"],
+                "Release date": int(datetime(2023, 8, 17).timestamp())
+            }
+            add_new_movie(movie)
         elif choice == "3":
             movie_name = input("Enter the name of the movie you want to delete: ")
             found = delete_movie(movie_name)
-
 
             if found:
                 print("Movie deleted successfully!")

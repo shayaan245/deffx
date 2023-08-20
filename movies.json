@@ -59,6 +59,21 @@
                 "ab"
             ],
             "Release date": 1056220200
+        },
+        {
+            "Movie name": "Example Movie",
+            "Genre": [
+                "Action",
+                "Adventure"
+            ],
+            "Runtime": 120,
+            "Metascore": 80,
+            "IMDb ratings": 7.5,
+            "Lead actors": [
+                "Actor1",
+                "Actor2"
+            ],
+            "Release date": 1692210600
         }
     ]
 }
