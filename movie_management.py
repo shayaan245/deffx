@@ -184,12 +184,12 @@ def add_new_movie(movie):
     movies_list = data["movies"]
     for existing_movie in movies_list:
         if existing_movie["Movie name"].lower() == movie_name.lower():
-            print("Movie with the same name already exists.")
+            messagebox.showinfo("Error", "Movie with the same name already exists.")
             return
 
     movies_list.append(movie)
     read_write_json(data, write=True)
-    print("Movie added successfully!")
+    messagebox.showinfo("Success", "Movie added successfully!")
 
 def get_formatted_datetime(epoch_time):
     dt_object = datetime.fromtimestamp(epoch_time)
@@ -323,10 +323,9 @@ def main_gui():
     ...
 # delete
 # add
+
 # crude=create read updaye delete
 
 if __name__ == "__main__":
-    # main_console()
-    main_gui()
-
-
+     main_console()
+     # main_gui()
