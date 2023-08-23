@@ -142,8 +142,8 @@ import json
 #         print("Invalid choice. Try again.\n")
 import json
 from datetime import datetime
-import tkinter as tk
-from tkinter import messagebox
+# import tkinter as tk
+# from tkinter import messagebox
 
 file_path = "movies.json"
 
@@ -177,155 +177,155 @@ def get_movie_input():
     return movie
 
 
-def add_new_movie(movie):
-    data = read_write_json()
-    movie_name = movie["Movie name"].lower()
-
-    movies_list = data["movies"]
-    for existing_movie in movies_list:
-        if existing_movie["Movie name"].lower() == movie_name.lower():
-            messagebox.showinfo("Error", "Movie with the same name already exists.")
-            return
-
-    movies_list.append(movie)
-    read_write_json(data, write=True)
-    messagebox.showinfo("Success", "Movie added successfully!")
-
-def get_formatted_datetime(epoch_time):
-    dt_object = datetime.fromtimestamp(epoch_time)
-    formatted_datetime = dt_object.strftime("%d-%m-%Y")
-    return formatted_datetime
-
-
-def display_movies():
-    data = read_write_json()
-    formatted_output_strings = [
-        f"Movie name is {movie['Movie name']}. "
-        f"Its genre is {', '.join(movie['Genre'])}."
-        f" The runtime of the movie is {movie['Runtime']} seconds. "
-        f"The Metascore for the movie is {movie['Metascore']}. "
-        f"The IMDb rating is {movie['IMDb ratings']}. "
-        f"The lead actors of the movie are {', '.join(movie['Lead actors'])}. "
-        f"The release date of the movie is {get_formatted_datetime(movie['Release date'])}.\n"
-        for movie in data["movies"]
-    ]
-    formatted_output = "\n".join(formatted_output_strings)
-    print(formatted_output)
-
-
-def delete_movie(movie_name):
-    data = read_write_json()
-    movies_list = data["movies"]
-    found = False
-
-    for movie in movies_list:
-        if movie["Movie name"].lower() == movie_name.lower():
-            movies_list.remove(movie)
-            found = True
-            break
-
-    return found
-
-
-def main_console():
-    while True:
-        print("1. Display Movies")
-        print("2. Add a new Movie")
-        print("3. Delete a Movie")
-        print("4. Exit")
-
-        choice = input("Enter your choice (1/2/3/4): ")
-
-        if choice == "1":
-            display_movies()
-        elif choice == "2":
-            movie =get_movie_input()
-            add_new_movie(movie)
-        elif choice == "3":
-            movie_name = input("Enter the name of the movie you want to delete: ")
-            found = delete_movie(movie_name)
-
-            if found:
-                print("Movie deleted successfully!")
-            else:
-                print("Movie not found.")
-        elif choice == "4":
-            break
-        else:
-            print("Invalid. Try again.\n")
-
-def main_gui():
-    def display_movies_gui():
-        data = read_write_json()
-        formatted_output_strings = [
-            f"Movie name: {movie['Movie name']}\n"
-            f"Genre: {', '.join(movie['Genre'])}\n"
-            f"Runtime: {movie['Runtime']} seconds\n"
-            f"Metascore: {movie['Metascore']}\n"
-            f"IMDb rating: {movie['IMDb ratings']}\n"
-            f"Lead actors: {', '.join(movie['Lead actors'])}\n"
-            f"Release date: {get_formatted_datetime(movie['Release date'])}\n"
-            for movie in data["movies"]
-        ]
-        formatted_output = "\n".join(formatted_output_strings)
-        text_output.delete("1.0", tk.END)
-        text_output.insert(tk.END, formatted_output)
-
-    def add_movie_gui():
-        movie = get_movie_input()
-        if movie is not None:
-            data = read_write_json()
-            movie_name = movie["Movie name"].lower()
-            movies_list = data["movies"]
-            for existing_movie in movies_list:
-                if existing_movie["Movie name"].lower() == movie_name.lower():
-                    messagebox.showinfo("Error", "Movie with the same name already exists.")
-                    return
-            movies_list.append(movie)
-            read_write_json(data, write=True)
-            messagebox.showinfo("Success", "Movie added successfully!")
-
-    def get_movie_input():
-        movie = {}
-        movie_name = input("Enter the movie name: ")
-
-        movie["Movie name"] = movie_name
-        genres = input("Enter genres: ").split(",")
-        movie["Genre"] = [genre.strip() for genre in genres]
-        movie["Runtime"] = int(input("Enter the runtime of the movie in seconds: "))
-        movie["Metascore"] = int(input("Enter the Metascore for the movie: "))
-        movie["IMDb ratings"] = float(input("Enter the IMDb rating for the movie: "))
-        lead_actors = input("Enter lead actors: ").split(",")
-        movie["Lead actors"] = [actor.strip() for actor in lead_actors]
-        release_date_str = input("Enter the release date of the movie (DD-MM-YYYY): ")
-        release_date = datetime.strptime(release_date_str, "%d-%m-%Y")
-        movie["Release date"] = int(release_date.timestamp())
-
-        return movie
-
-    root = tk.Tk()
-    root.title("Movie Management GUI")
-
-    # Display Movies Button
-    btn_display_movies = tk.Button(root, text="Display Movies", command=display_movies_gui)
-    btn_display_movies.pack()
-
-    # Add Movie Button
-    btn_add_movie = tk.Button(root, text="Add Movie", command=add_movie_gui)
-    btn_add_movie.pack()
-
-    # Text Output Area
-    text_output = tk.Text(root, height=15, width=60)
-    text_output.pack()
-
-    root.mainloop()
-
-    ...
-# delete
-# add
-
-# crude=create read updaye delete
-
-if __name__ == "__main__":
-     main_console()
-     # main_gui()
+# def add_new_movie(movie):
+#     data = read_write_json()
+#     movie_name = movie["Movie name"].lower()
+#
+#     movies_list = data["movies"]
+#     for existing_movie in movies_list:
+#         if existing_movie["Movie name"].lower() == movie_name.lower():
+#             messagebox.showinfo("Error", "Movie with the same name already exists.")
+#             return
+#
+#     movies_list.append(movie)
+#     read_write_json(data, write=True)
+#     messagebox.showinfo("Success", "Movie added successfully!")
+#
+# def get_formatted_datetime(epoch_time):
+#     dt_object = datetime.fromtimestamp(epoch_time)
+#     formatted_datetime = dt_object.strftime("%d-%m-%Y")
+#     return formatted_datetime
+#
+#
+# def display_movies():
+#     data = read_write_json()
+#     formatted_output_strings = [
+#         f"Movie name is {movie['Movie name']}. "
+#         f"Its genre is {', '.join(movie['Genre'])}."
+#         f" The runtime of the movie is {movie['Runtime']} seconds. "
+#         f"The Metascore for the movie is {movie['Metascore']}. "
+#         f"The IMDb rating is {movie['IMDb ratings']}. "
+#         f"The lead actors of the movie are {', '.join(movie['Lead actors'])}. "
+#         f"The release date of the movie is {get_formatted_datetime(movie['Release date'])}.\n"
+#         for movie in data["movies"]
+#     ]
+#     formatted_output = "\n".join(formatted_output_strings)
+#     print(formatted_output)
+#
+#
+# def delete_movie(movie_name):
+#     data = read_write_json()
+#     movies_list = data["movies"]
+#     found = False
+#
+#     for movie in movies_list:
+#         if movie["Movie name"].lower() == movie_name.lower():
+#             movies_list.remove(movie)
+#             found = True
+#             break
+#
+#     return found
+#
+#
+# def main_console():
+#     while True:
+#         print("1. Display Movies")
+#         print("2. Add a new Movie")
+#         print("3. Delete a Movie")
+#         print("4. Exit")
+#
+#         choice = input("Enter your choice (1/2/3/4): ")
+#
+#         if choice == "1":
+#             display_movies()
+#         elif choice == "2":
+#             movie =get_movie_input()
+#             add_new_movie(movie)
+#         elif choice == "3":
+#             movie_name = input("Enter the name of the movie you want to delete: ")
+#             found = delete_movie(movie_name)
+#
+#             if found:
+#                 print("Movie deleted successfully!")
+#             else:
+#                 print("Movie not found.")
+#         elif choice == "4":
+#             break
+#         else:
+#             print("Invalid. Try again.\n")
+#
+# def main_gui():
+#     def display_movies_gui():
+#         data = read_write_json()
+#         formatted_output_strings = [
+#             f"Movie name: {movie['Movie name']}\n"
+#             f"Genre: {', '.join(movie['Genre'])}\n"
+#             f"Runtime: {movie['Runtime']} seconds\n"
+#             f"Metascore: {movie['Metascore']}\n"
+#             f"IMDb rating: {movie['IMDb ratings']}\n"
+#             f"Lead actors: {', '.join(movie['Lead actors'])}\n"
+#             f"Release date: {get_formatted_datetime(movie['Release date'])}\n"
+#             for movie in data["movies"]
+#         ]
+#         formatted_output = "\n".join(formatted_output_strings)
+#         text_output.delete("1.0", tk.END)
+#         text_output.insert(tk.END, formatted_output)
+#
+#     def add_movie_gui():
+#         movie = get_movie_input()
+#         if movie is not None:
+#             data = read_write_json()
+#             movie_name = movie["Movie name"].lower()
+#             movies_list = data["movies"]
+#             for existing_movie in movies_list:
+#                 if existing_movie["Movie name"].lower() == movie_name.lower():
+#                     messagebox.showinfo("Error", "Movie with the same name already exists.")
+#                     return
+#             movies_list.append(movie)
+#             read_write_json(data, write=True)
+#             messagebox.showinfo("Success", "Movie added successfully!")
+#
+#     def get_movie_input():
+#         movie = {}
+#         movie_name = input("Enter the movie name: ")
+#
+#         movie["Movie name"] = movie_name
+#         genres = input("Enter genres: ").split(",")
+#         movie["Genre"] = [genre.strip() for genre in genres]
+#         movie["Runtime"] = int(input("Enter the runtime of the movie in seconds: "))
+#         movie["Metascore"] = int(input("Enter the Metascore for the movie: "))
+#         movie["IMDb ratings"] = float(input("Enter the IMDb rating for the movie: "))
+#         lead_actors = input("Enter lead actors: ").split(",")
+#         movie["Lead actors"] = [actor.strip() for actor in lead_actors]
+#         release_date_str = input("Enter the release date of the movie (DD-MM-YYYY): ")
+#         release_date = datetime.strptime(release_date_str, "%d-%m-%Y")
+#         movie["Release date"] = int(release_date.timestamp())
+#
+#         return movie
+#
+#     root = tk.Tk()
+#     root.title("Movie Management GUI")
+#
+#     # Display Movies Button
+#     btn_display_movies = tk.Button(root, text="Display Movies", command=display_movies_gui)
+#     btn_display_movies.pack()
+#
+#     # Add Movie Button
+#     btn_add_movie = tk.Button(root, text="Add Movie", command=add_movie_gui)
+#     btn_add_movie.pack()
+#
+#     # Text Output Area
+#     text_output = tk.Text(root, height=15, width=60)
+#     text_output.pack()
+#
+#     root.mainloop()
+#
+#     ...
+# # delete
+# # add
+#
+# # crude=create read updaye delete
+#
+# if __name__ == "__main__":
+#      main_console()
+#      # main_gui()

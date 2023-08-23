@@ -65,22 +65,22 @@ def main_gui():
     root = tk.Tk()
     root.title("Movie Management GUI")
 
-    # Display Movies Button
+    
     btn_display_movies = tk.Button(root, text="Display Movies", command=lambda: display_movies_gui(text_output))
     btn_display_movies.pack()
 
-    # Add Movie Button
+
     btn_add_movie = tk.Button(root, text="Add Movie", command=lambda: add_movie_gui(text_output))
     btn_add_movie.pack()
 
-    # Delete Movie Entry and Button
+
     entry_delete_movie = tk.Entry(root, width=30)
     entry_delete_movie.pack()
 
     btn_delete_movie = tk.Button(root, text="Delete Movie", command=lambda: delete_movie_gui(text_output, entry_delete_movie))
     btn_delete_movie.pack()
 
-    # Text Output Area
+
     text_output = tk.Text(root, height=15, width=60)
     text_output.pack()
 
