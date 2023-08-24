@@ -142,8 +142,7 @@ import json
 #         print("Invalid choice. Try again.\n")
 import json
 from datetime import datetime
-# import tkinter as tk
-# from tkinter import messagebox
+
 
 file_path = "movies.json"
 

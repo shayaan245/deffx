@@ -50,24 +50,11 @@
         {
             "Movie name": "as",
             "Genre": [
-                "as"
+                "ds"
             ],
-            "Runtime": 12,
-            "Metascore": 12,
-            "IMDb ratings": 2.0,
-            "Lead actors": [
-                "s"
-            ],
-            "Release date": 1063305000
-        },
-        {
-            "Movie name": "oo",
-            "Genre": [
-                "as"
-            ],
-            "Runtime": 2,
-            "Metascore": 2,
-            "IMDb ratings": 2.0,
+            "Runtime": 3,
+            "Metascore": 3,
+            "IMDb ratings": 3.0,
             "Lead actors": [
                 "s"
             ],
