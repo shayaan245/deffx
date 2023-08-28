@@ -98,7 +98,80 @@ def main_gui():
 
 
 def add_movie_gui():
-    btn_save = tk.Button
+    top = tk.Toplevel()
+    top.title("Add Movie")
+
+    label_movie_name = tk.Label(top, text="Movie Name:")
+    entry_movie_name = tk.Entry(top)
+    label_genre = tk.Label(top, text="Genre (comma-separated):")
+    entry_genre = tk.Entry(top)
+    label_runtime = tk.Label(top, text="Runtime (seconds):")
+    entry_runtime = tk.Entry(top)
+    label_metascore = tk.Label(top, text="Metascore:")
+    entry_metascore = tk.Entry(top)
+    label_imdb = tk.Label(top, text="IMDb rating:")
+    entry_imdb = tk.Entry(top)
+    label_actors = tk.Label(top, text="Lead actors (comma-separated):")
+    entry_actors = tk.Entry(top)
+    label_release = tk.Label(top, text="Release date (DD-MM-YYYY):")
+    entry_release = tk.Entry(top)
+
+    def save_movie():
+        movie_name = entry_movie_name.get()
+        genre = entry_genre.get()
+        runtime = entry_runtime.get()
+        metascore = entry_metascore.get()
+        imdb = entry_imdb.get()
+        actors = entry_actors.get()
+        release = entry_release.get()
+
+        if not (movie_name and genre and runtime and metascore and imdb and actors and release):
+            messagebox.showinfo("Error", "Please enter all movie details.")
+            return
+
+        movie = {
+            "Movie name": movie_name,
+            "Genre": genre.split(","),
+            "Runtime": int(runtime),
+            "Metascore": int(metascore),
+            "IMDb ratings": float(imdb),
+            "Lead actors": actors.split(","),
+            "Release date": int(datetime.strptime(release, "%d-%m-%Y").timestamp())
+        }
+
+        data = read_write_json()
+        movie_name_lower = movie_name.lower()
+        movies_list = data["movies"]
+
+        for existing_movie in movies_list:
+            if existing_movie["Movie name"].lower() == movie_name_lower:
+                messagebox.showinfo("Error", "Movie with the same name already exists.")
+                return
+
+        movies_list.append(movie)
+        read_write_json(data, write=True)
+        messagebox.showinfo("Success", "Movie added successfully!")
+        top.destroy()
+
+    btn_save = tk.Button(top, text="Save Movie", command=save_movie)
+
+    label_movie_name.pack()
+    entry_movie_name.pack()
+    label_genre.pack()
+    entry_genre.pack()
+    label_runtime.pack()
+    entry_runtime.pack()
+    label_metascore.pack()
+    entry_metascore.pack()
+    label_imdb.pack()
+    entry_imdb.pack()
+    label_actors.pack()
+    entry_actors.pack()
+    label_release.pack()
+    entry_release.pack()
+    btn_save.pack()
+
+    top.mainloop()
 
 
 if __name__ == "__main__":
