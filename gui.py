@@ -20,12 +20,13 @@ def display_movie_names_ratings(listbox_movies):
         listbox_movies.insert(tk.END, f"{movie['Movie name']} - IMDb: {movie['IMDb ratings']}")
 
 
-def show_movie_details(event, listbox_movies, text_output, delete_button, root):
+def show_movie_details(event, listbox_movies, text_output, delete_button, close_button, root):
     selected_index = listbox_movies.curselection()
 
     if not selected_index:
         text_output.delete("1.0", tk.END)
         delete_button.pack_forget()
+        close_button.pack_forget()
         return
 
     movie_name = listbox_movies.get(selected_index).split(" - ")[0]
@@ -50,27 +51,46 @@ def show_movie_details(event, listbox_movies, text_output, delete_button, root):
             )
 
             delete_button.pack()
+            close_button.config(
+                command=lambda: close_movie_details(text_output, delete_button, close_button)
+            )
+            close_button.place(x=590, y=10)
+            close_button.config(
+                command=lambda: close_movie_details(text_output, delete_button, close_button)
+            )
+            close_button.pack()
 
 
 def delete_movie(movie_name, text_output, delete_button, listbox_movies, root):
-    data = read_write_json()
-    movies_list = data["movies"]
-    found = False
+    confirmed = messagebox.askyesno("Confirmation", f"Do you want to delete the movie '{movie_name}'?")
 
-    for movie in movies_list:
-        if movie["Movie name"].lower() == movie_name.lower():
-            movies_list.remove(movie)
-            found = True
-            break
+    if confirmed:
+        data = read_write_json()
+        movies_list = data["movies"]
+        found = False
 
-    if found:
-        read_write_json(data, write=True)
-        messagebox.showinfo("Success", "Movie deleted successfully!")
-        display_movie_names_ratings(listbox_movies)
-        text_output.delete("1.0", tk.END)
-        delete_button.pack_forget()
+        for movie in movies_list:
+            if movie["Movie name"].lower() == movie_name.lower():
+                movies_list.remove(movie)
+                found = True
+                break
+
+        if found:
+            read_write_json(data, write=True)
+            messagebox.showinfo("Success", "Movie deleted successfully!")
+            display_movie_names_ratings(listbox_movies)
+            text_output.delete("1.0", tk.END)
+            delete_button.pack_forget()
+        else:
+            messagebox.showinfo("Error", "Movie not found.")
     else:
-        messagebox.showinfo("Error", "Movie not found.")
+        messagebox.showinfo("Info", "Movie not deleted.")
+
+
+def close_movie_details(text_output, delete_button, close_button):
+    text_output.delete("1.0", tk.END)
+    delete_button.pack_forget()
+    close_button.pack_forget()
 
 
 def main_gui():
@@ -87,9 +107,10 @@ def main_gui():
     text_output.pack()
 
     delete_button = tk.Button(root, text="Delete Movie", command=lambda: None)
+    close_button = tk.Button(root, text="❌", command=lambda: None)
 
     listbox_movies.bind("<<ListboxSelect>>", lambda event: show_movie_details(
-        event, listbox_movies, text_output, delete_button, root
+        event, listbox_movies, text_output, delete_button, close_button, root
     ))
 
     display_movie_names_ratings(listbox_movies)
