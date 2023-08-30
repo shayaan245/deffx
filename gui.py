@@ -100,7 +100,7 @@ def main_gui():
     listbox_movies = tk.Listbox(root, height=15, width=60)
     listbox_movies.pack()
 
-    add_button = tk.Button(root, text="Add Movie", command=add_movie_gui)
+    add_button = tk.Button(root, text="Add Movie", command=lambda: add_movie_gui(listbox_movies))  # Pass listbox_movies
     add_button.pack()
 
     text_output = tk.Text(root, height=15, width=60)
@@ -118,7 +118,7 @@ def main_gui():
     root.mainloop()
 
 
-def add_movie_gui():
+def add_movie_gui(listbox_movies):
     top = tk.Toplevel()
     top.title("Add Movie")
 
@@ -137,7 +137,9 @@ def add_movie_gui():
     label_release = tk.Label(top, text="Release date (DD-MM-YYYY):")
     entry_release = tk.Entry(top)
 
-    def save_movie():
+    label_error = tk.Label(top, text="", fg="red")
+
+    def save_movie(listbox_movies=None):
         movie_name = entry_movie_name.get()
         genre = entry_genre.get()
         runtime = entry_runtime.get()
@@ -147,8 +149,10 @@ def add_movie_gui():
         release = entry_release.get()
 
         if not (movie_name and genre and runtime and metascore and imdb and actors and release):
-            messagebox.showinfo("Error", "Please enter all movie details.")
+            label_error.config(text="Please enter all movie details.")  # Set error message
             return
+        else:
+            label_error.config(text="")
 
         movie = {
             "Movie name": movie_name,
@@ -173,6 +177,7 @@ def add_movie_gui():
         read_write_json(data, write=True)
         messagebox.showinfo("Success", "Movie added successfully!")
         top.destroy()
+        display_movie_names_ratings(listbox_movies)
 
     btn_save = tk.Button(top, text="Save Movie", command=save_movie)
 
@@ -191,6 +196,7 @@ def add_movie_gui():
     label_release.pack()
     entry_release.pack()
     btn_save.pack()
+    label_error.pack()
 
     top.mainloop()
 
