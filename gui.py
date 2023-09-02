@@ -211,7 +211,7 @@ def add_movie_gui(listbox_movies):
     label_release_error = tk.Label(top, text="", fg="red")
     label_release_error.pack()
 
-    btn_save = tk.Button(top, text="Save Movie", command=save_movie)
+    btn_save = tk.Button(top, text="Save Movie", command=lambda: save_movie(listbox_movies))
     btn_save.pack()
 
     top.mainloop()
