@@ -136,7 +136,7 @@ def add_movie_gui(listbox_movies):
         if not release:
             label_release_error.config(text="Release date is required.")
 
-        # If any field is empty, return False to indicate validation failure
+        
         return not any([not movie_name, not genre, not runtime, not metascore, not imdb, not actors, not release])
 
     def save_movie(listbox_movies=None):
