@@ -5,12 +5,10 @@ from movie_management import read_write_json
 
 file_path = "movies.json"
 
-
 def get_formatted_datetime(epoch_time):
     dt_object = datetime.fromtimestamp(epoch_time)
     formatted_datetime = dt_object.strftime("%d-%m-%Y")
     return formatted_datetime
-
 
 def display_movie_names_ratings(listbox_movies):
     data = read_write_json()
@@ -19,8 +17,7 @@ def display_movie_names_ratings(listbox_movies):
     for movie in data["movies"]:
         listbox_movies.insert(tk.END, f"{movie['Movie name']} - IMDb: {movie['IMDb ratings']}")
 
-
-def create_movie_details_window(movie):
+def create_movie_details_window(movie,listbox_movies):
     top = tk.Toplevel()
     top.title("Movie Details")
 
@@ -38,14 +35,13 @@ def create_movie_details_window(movie):
     text_output.insert(tk.END, formatted_output)
     text_output.pack()
 
-    delete_button = tk.Button(top, text="Delete Movie", command=lambda: delete_movie(movie, top))
+    delete_button = tk.Button(top, text="Delete Movie", command=lambda: delete_movie(movie, top, listbox_movies))
     delete_button.pack()
 
     close_button = tk.Button(top, text="Close", command=top.destroy)
     close_button.pack()
 
-
-def delete_movie(movie, top):
+def delete_movie(movie, top, listbox_movies):
     confirmed = messagebox.askyesno("Confirmation", f"Do you want to delete the movie '{movie['Movie name']}'?")
 
     if confirmed:
@@ -63,9 +59,9 @@ def delete_movie(movie, top):
             read_write_json(data, write=True)
             messagebox.showinfo("Success", "Movie deleted successfully!")
             top.destroy()
+            display_movie_names_ratings(listbox_movies)  # Refresh the list
         else:
             messagebox.showinfo("Error", "Movie not found.")
-
 
 def main_gui():
     root = tk.Tk()
@@ -82,7 +78,6 @@ def main_gui():
     display_movie_names_ratings(listbox_movies)
 
     root.mainloop()
-
 
 def add_movie_gui(listbox_movies):
     top = tk.Toplevel()
@@ -136,7 +131,6 @@ def add_movie_gui(listbox_movies):
         if not release:
             label_release_error.config(text="Release date is required.")
 
-        
         return not any([not movie_name, not genre, not runtime, not metascore, not imdb, not actors, not release])
 
     def save_movie(listbox_movies=None):
@@ -227,8 +221,9 @@ def show_movie_details(event, listbox_movies):
 
     for movie in data["movies"]:
         if movie["Movie name"].lower() == movie_name.lower():
-            create_movie_details_window(movie)
+            create_movie_details_window(movie, listbox_movies)
             break
+
 
 if __name__ == "__main__":
     main_gui()

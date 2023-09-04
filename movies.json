@@ -46,32 +46,6 @@
                 "Liev Schreiber"
             ],
             "Release date": 1241192169
-        },
-        {
-            "Movie name": "jh",
-            "Genre": [
-                "h"
-            ],
-            "Runtime": 5,
-            "Metascore": 6,
-            "IMDb ratings": 2.0,
-            "Lead actors": [
-                "k"
-            ],
-            "Release date": 1055961000
-        },
-        {
-            "Movie name": "a",
-            "Genre": [
-                "a"
-            ],
-            "Runtime": 1,
-            "Metascore": 1,
-            "IMDb ratings": 1.0,
-            "Lead actors": [
-                "a"
-            ],
-            "Release date": 1055961000
         }
     ]
 }
