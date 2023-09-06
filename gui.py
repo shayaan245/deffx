@@ -10,6 +10,8 @@ def get_formatted_datetime(epoch_time):
     formatted_datetime = dt_object.strftime("%d-%m-%Y")
     return formatted_datetime
 
+
+
 def display_movie_names_ratings(listbox_movies):
     data = read_write_json()
     listbox_movies.delete(0, tk.END)
@@ -128,10 +130,14 @@ def add_movie_gui(listbox_movies):
             label_imdb_error.config(text="IMDb rating is required.")
         if not actors:
             label_actors_error.config(text="Lead actors are required.")
-        if not release:
-            label_release_error.config(text="Release date is required.")
 
-        return not any([not movie_name, not genre, not runtime, not metascore, not imdb, not actors, not release])
+        try:
+            datetime.strptime(release, "%d-%m-%Y")
+        except ValueError:
+            label_release_error.config(text="Invalid release date format. Use DD-MM-YYYY.")
+            return False
+
+        return True
 
     def save_movie(listbox_movies=None):
         if not validate_input():
