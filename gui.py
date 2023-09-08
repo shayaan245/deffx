@@ -10,8 +10,6 @@ def get_formatted_datetime(epoch_time):
     formatted_datetime = dt_object.strftime("%d-%m-%Y")
     return formatted_datetime
 
-
-
 def display_movie_names_ratings(listbox_movies):
     data = read_write_json()
     listbox_movies.delete(0, tk.END)
@@ -19,7 +17,7 @@ def display_movie_names_ratings(listbox_movies):
     for movie in data["movies"]:
         listbox_movies.insert(tk.END, f"{movie['Movie name']} - IMDb: {movie['IMDb ratings']}")
 
-def create_movie_details_window(movie,listbox_movies):
+def create_movie_details_window(movie, listbox_movies):
     top = tk.Toplevel()
     top.title("Movie Details")
 
@@ -89,7 +87,7 @@ def add_movie_gui(listbox_movies):
     entry_movie_name = tk.Entry(top)
     label_genre = tk.Label(top, text="Genre (comma-separated):")
     entry_genre = tk.Entry(top)
-    label_runtime = tk.Label(top, text="Runtime (seconds):")
+    label_runtime = tk.Label(top, text="Runtime (HH:MM:SS):")
     entry_runtime = tk.Entry(top)
     label_metascore = tk.Label(top, text="Metascore:")
     entry_metascore = tk.Entry(top)
@@ -101,7 +99,6 @@ def add_movie_gui(listbox_movies):
     entry_release = tk.Entry(top)
 
     def validate_input():
-        # Reset error labels
         label_movie_name_error.config(text="")
         label_genre_error.config(text="")
         label_runtime_error.config(text="")
@@ -124,20 +121,31 @@ def add_movie_gui(listbox_movies):
             label_genre_error.config(text="Genre is required.")
         if not runtime:
             label_runtime_error.config(text="Runtime is required.")
-        if not metascore:
-            label_metascore_error.config(text="Metascore is required.")
         if not imdb:
             label_imdb_error.config(text="IMDb rating is required.")
+        elif not imdb.replace('.', '', 1).isdigit():
+            label_imdb_error.config(text="IMDb rating must be a number.")
+        if not metascore:
+            label_metascore_error.config(text="Metascore is required.")
+        elif not is_valid_metascore(metascore):
+            label_metascore_error.config(text="Metascore must be a number .")
         if not actors:
             label_actors_error.config(text="Lead actors are required.")
 
         try:
             datetime.strptime(release, "%d-%m-%Y")
         except ValueError:
-            label_release_error.config(text="Invalid release date format. Use DD-MM-YYYY.")
+            label_release_error.config(text="Invalid release date format. Use DD-MM-YYYY")
             return False
 
         return True
+
+    def is_valid_metascore(value):
+        try:
+            score = float(value)
+            return 0 <= score <= 10
+        except ValueError:
+            return False
 
     def save_movie(listbox_movies=None):
         if not validate_input():
@@ -151,11 +159,22 @@ def add_movie_gui(listbox_movies):
         actors = entry_actors.get()
         release = entry_release.get()
 
+
+        release = release.rstrip()
+
+        runtime_parts = runtime.split(":")
+        if len(runtime_parts) != 3:
+            label_runtime_error.config(text="Invalid runtime format. Use HH:MM:SS.")
+            return
+
+        hours, minutes, seconds = map(int, runtime_parts)
+        total_seconds = (hours * 3600) + (minutes * 60) + seconds
+
         movie = {
             "Movie name": movie_name,
             "Genre": genre.split(","),
-            "Runtime": int(runtime),
-            "Metascore": int(metascore),
+            "Runtime": total_seconds,
+            "Metascore": float(metascore),
             "IMDb ratings": float(imdb),
             "Lead actors": actors.split(","),
             "Release date": int(datetime.strptime(release, "%d-%m-%Y").timestamp())
@@ -229,7 +248,6 @@ def show_movie_details(event, listbox_movies):
         if movie["Movie name"].lower() == movie_name.lower():
             create_movie_details_window(movie, listbox_movies)
             break
-
 
 if __name__ == "__main__":
     main_gui()
