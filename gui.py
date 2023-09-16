@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime
+import re  # Import the regular expressions module
 from movie_management import read_write_json
 
 file_path = "movies.json"
@@ -17,14 +18,19 @@ def display_movie_names_ratings(listbox_movies):
     for movie in data["movies"]:
         listbox_movies.insert(tk.END, f"{movie['Movie name']} - IMDb: {movie['IMDb ratings']}")
 
+
 def create_movie_details_window(movie, listbox_movies):
     top = tk.Toplevel()
     top.title("Movie Details")
+    hours, remainder = divmod(movie['Runtime'], 3600)
+    minutes, _ = divmod(remainder, 60)
+
+    formatted_runtime = f"{hours}h {minutes}m"
 
     formatted_output = (
         f"Movie name: {movie['Movie name']}\n"
         f"Genre: {', '.join(movie['Genre'])}\n"
-        f"Runtime: {movie['Runtime']} seconds\n"
+        f"Runtime: {formatted_runtime}\n"
         f"Metascore: {movie['Metascore']}\n"
         f"IMDb rating: {movie['IMDb ratings']}\n"
         f"Lead actors: {', '.join(movie['Lead actors'])}\n"
@@ -87,7 +93,7 @@ def add_movie_gui(listbox_movies):
     entry_movie_name = tk.Entry(top)
     label_genre = tk.Label(top, text="Genre (comma-separated):")
     entry_genre = tk.Entry(top)
-    label_runtime = tk.Label(top, text="Runtime (HH:MM:SS):")
+    label_runtime = tk.Label(top, text="Runtime (HH:MM ):")
     entry_runtime = tk.Entry(top)
     label_metascore = tk.Label(top, text="Metascore:")
     entry_metascore = tk.Entry(top)
@@ -128,7 +134,7 @@ def add_movie_gui(listbox_movies):
         if not metascore:
             label_metascore_error.config(text="Metascore is required.")
         elif not is_valid_metascore(metascore):
-            label_metascore_error.config(text="Metascore must be a number .")
+            label_metascore_error.config(text="Metascore must be a number.")
         if not actors:
             label_actors_error.config(text="Lead actors are required.")
 
@@ -159,16 +165,21 @@ def add_movie_gui(listbox_movies):
         actors = entry_actors.get()
         release = entry_release.get()
 
-
         release = release.rstrip()
 
-        runtime_parts = runtime.split(":")
-        if len(runtime_parts) != 3:
-            label_runtime_error.config(text="Invalid runtime format. Use HH:MM:SS.")
+        # Validate the runtime format using regular expressions
+        runtime_pattern = r'^(\d{1,2}):(\d{2})'     # HH:MM or HH:MM:SS
+        if not re.match(runtime_pattern, runtime):
+            label_runtime_error.config(text="Invalid runtime format. Use HH:MM .")
             return
 
-        hours, minutes, seconds = map(int, runtime_parts)
-        total_seconds = (hours * 3600) + (minutes * 60) + seconds
+        # Split the runtime input to hours, minutes, and seconds (if present)
+        runtime_parts = runtime.split(":")
+        hours = int(runtime_parts[0])
+        minutes = int(runtime_parts[1])
+
+
+        total_seconds = (hours * 3600) + (minutes * 60)
 
         movie = {
             "Movie name": movie_name,
@@ -194,6 +205,7 @@ def add_movie_gui(listbox_movies):
         messagebox.showinfo("Success", "Movie added successfully!")
         top.destroy()
         display_movie_names_ratings(listbox_movies)
+
 
     label_movie_name.pack()
     entry_movie_name.pack()
@@ -234,6 +246,7 @@ def add_movie_gui(listbox_movies):
     btn_save.pack()
 
     top.mainloop()
+
 
 def show_movie_details(event, listbox_movies):
     selected_index = listbox_movies.curselection()
