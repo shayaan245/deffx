@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime
-import re  # Import the regular expressions module
+import time
 from movie_management import read_write_json
 
 file_path = "movies.json"
@@ -17,7 +17,6 @@ def display_movie_names_ratings(listbox_movies):
 
     for movie in data["movies"]:
         listbox_movies.insert(tk.END, f"{movie['Movie name']} - IMDb: {movie['IMDb ratings']}")
-
 
 def create_movie_details_window(movie, listbox_movies):
     top = tk.Toplevel()
@@ -125,8 +124,8 @@ def add_movie_gui(listbox_movies):
             label_movie_name_error.config(text="Movie name is required.")
         if not genre:
             label_genre_error.config(text="Genre is required.")
-        if not runtime:
-            label_runtime_error.config(text="Runtime is required.")
+        if not is_valid_runtime(runtime):
+            label_runtime_error.config(text="Invalid runtime format. Use HH:MM .")
         if not imdb:
             label_imdb_error.config(text="IMDb rating is required.")
         elif not imdb.replace('.', '', 1).isdigit():
@@ -153,6 +152,13 @@ def add_movie_gui(listbox_movies):
         except ValueError:
             return False
 
+    def is_valid_runtime(value):
+        try:
+            time.strptime(value, "%H:%M")
+            return True
+        except ValueError:
+            return False
+
     def save_movie(listbox_movies=None):
         if not validate_input():
             return
@@ -167,17 +173,10 @@ def add_movie_gui(listbox_movies):
 
         release = release.rstrip()
 
-        # Validate the runtime format using regular expressions
-        runtime_pattern = r'^(\d{1,2}):(\d{2})'     # HH:MM or HH:MM:SS
-        if not re.match(runtime_pattern, runtime):
-            label_runtime_error.config(text="Invalid runtime format. Use HH:MM .")
-            return
-
         # Split the runtime input to hours, minutes, and seconds (if present)
         runtime_parts = runtime.split(":")
         hours = int(runtime_parts[0])
         minutes = int(runtime_parts[1])
-
 
         total_seconds = (hours * 3600) + (minutes * 60)
 
@@ -205,7 +204,6 @@ def add_movie_gui(listbox_movies):
         messagebox.showinfo("Success", "Movie added successfully!")
         top.destroy()
         display_movie_names_ratings(listbox_movies)
-
 
     label_movie_name.pack()
     entry_movie_name.pack()
@@ -246,7 +244,6 @@ def add_movie_gui(listbox_movies):
     btn_save.pack()
 
     top.mainloop()
-
 
 def show_movie_details(event, listbox_movies):
     selected_index = listbox_movies.curselection()
